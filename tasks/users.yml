@@ -64,7 +64,7 @@
     state: 'directory'
     owner: '{{ item.home_owner | d(omit) }}'
     group: '{{ item.home_group | d(omit) }}'
-    mode:  '{{ item.home_mode  | d(omit) }}'
+    mode:  '{% if (ansible_local|d() and ansible_local.core|d() and ansible_local.core.homedir_umask|d()) %}{{ ansible_local.core.homedir_umask }}{% else %}}{{ item.home_mode | d(omit)}}{% endif %}'
   with_flattened:
     - '{{ users__default_accounts }}'
     - '{{ users__admin_accounts }}'
